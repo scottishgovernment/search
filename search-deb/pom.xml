@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>scot.mygov.search</groupId>
+    <artifactId>search</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>search-deb</artifactId>
+  <packaging>deb</packaging>
+
+  <name>Search Debian Packaging</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>scot.mygov.search</groupId>
+      <artifactId>search-service</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.9</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <excludeTransitive>true</excludeTransitive>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>jdeb</artifactId>
+        <groupId>org.vafer</groupId>
+        <extensions>true</extensions>
+        <configuration>
+          <dataSet>
+            <data>
+              <src>${basedir}/src/search.service</src>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/lib/systemd/system</prefix>
+              </mapper>
+            </data>
+            <data>
+              <src>${project.build.directory}/dependency/search-service-${project.version}.jar</src>
+              <dst>search.jar</dst>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/opt/search</prefix>
+              </mapper>
+            </data>
+            <data>
+              <src>${basedir}/src/logback.xml</src>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/opt/search</prefix>
+              </mapper>
+            </data>
+            <data>
+              <src>${basedir}/src/run</src>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/opt/search</prefix>
+                <filemode>755</filemode>
+              </mapper>
+            </data>
+            <data>
+              <type>template</type>
+              <paths>
+                <path>/var/log/search</path>
+              </paths>
+              <mapper>
+                <type>perm</type>
+              </mapper>
+            </data>
+          </dataSet>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,19 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {{#tags}}
+        {"term": { "tags": "{{.}}" } },
+        {{/tags}}
+        {}
+      ]
+    }
+  },
+  "sort": [
+    {
+      "number": {
+        "unmapped_type": "integer"
+      }
+    }
+  ]
+}

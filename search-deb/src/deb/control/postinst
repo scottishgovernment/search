@@ -1,0 +1,19 @@
+#!/bin/sh
+
+adduser \
+  --quiet \
+  --system \
+  --home /opt/search \
+  --no-create-home \
+  --shell /bin/bash \
+  --group \
+  --gecos "Search" \
+  search
+
+mkdir -p /var/log/search
+chmod 755 /var/log/search
+chown search:nogroup /var/log/search
+
+systemctl daemon-reload
+systemctl enable search
+systemctl start search

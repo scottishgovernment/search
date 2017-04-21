@@ -1,0 +1,10 @@
+{
+  "suggest": {
+    "number" : {
+      "prefix" : "{{term}}",
+      "completion" : {
+        "field" : "autocomplete"
+      }
+    }
+  }
+}

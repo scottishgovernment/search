@@ -1,0 +1,12 @@
+[Unit]
+Description=Search
+After=network.target
+
+[Service]
+User=search
+WorkingDirectory=/opt/search
+ExecStart=/opt/search/run
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

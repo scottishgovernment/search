@@ -1,0 +1,10 @@
+Package: search
+Version: [[version]]
+Section: mygov
+Priority: optional
+Architecture: all
+Description: [[description]]
+Maintainer: martin.ellis@gov.scot
+Depends: java8-runtime-headless
+Replaces: mygov-search
+Conflicts: mygov-search
