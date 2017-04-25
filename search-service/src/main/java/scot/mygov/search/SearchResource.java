@@ -7,12 +7,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
@@ -39,27 +37,6 @@ public class SearchResource {
 
     @Inject
     Provider<WebTarget> targetProvider;
-
-    @GET
-    @Path("direct/")
-    public Response searchByQueryParam(
-            @QueryParam("q") String query,
-            @QueryParam("from") @DefaultValue("0") int from,
-            @QueryParam("size") @DefaultValue("10") int size)
-            throws JsonProcessingException {
-
-        ObjectNode params = JSON.objectNode();
-        params.put("term", query);
-        params.put("from", from);
-        params.put("size", size);
-
-        ObjectNode request = JSON.objectNode();
-        request.set(ID, JSON.textNode("site-search"));
-        request.set(PARAMS, params);
-
-        WebTarget target = target(SEARCH_TEMPLATE);
-        return proxy(target, request);
-    }
 
     @GET
     @Path("{template}")
