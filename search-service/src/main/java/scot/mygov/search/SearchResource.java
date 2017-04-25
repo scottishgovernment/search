@@ -78,7 +78,7 @@ public class SearchResource {
     }
 
     @POST
-    @Path("{prefix : (template-search/)?}{template}")
+    @Path("{template}")
     public Response searchAll(
             @PathParam("template") String template,
             JsonNode node)
@@ -92,22 +92,6 @@ public class SearchResource {
         return proxy(target, request);
     }
 
-    @POST
-    @Path("template-search/{type}/{template}")
-    public Response searchByType(
-            @PathParam("type") String type,
-            @PathParam("template") String template,
-            JsonNode node)
-            throws JsonProcessingException {
-
-        ObjectNode request = JSON.objectNode();
-        request.set(ID, JSON.textNode(template));
-        request.set(PARAMS, node);
-
-        WebTarget target = target("{type}/_search/template")
-                .resolveTemplate("type", type);
-        return proxy(target, request);
-    }
 
     private WebTarget target(String path) {
         return targetProvider.get().path(path);
