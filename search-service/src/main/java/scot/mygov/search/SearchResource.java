@@ -65,7 +65,6 @@ public class SearchResource {
             @PathParam("template") String template,
             @Context UriInfo uriInfo) {
 
-        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
         ObjectNode request = queryObject(template, uriInfo.getQueryParameters());
         WebTarget target = target("_search/template");
         return proxy(target, request);
