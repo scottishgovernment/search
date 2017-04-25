@@ -17,13 +17,13 @@ exposed directly to the internet. It limits the queries that are forwarded to El
 # Configuration
 
 * `port`
- * The port number to listen on for HTTP requests.
- * Type: integer (0-65535)
- * Default: `8082`
+  * The port number to listen on for HTTP requests.
+  * Type: integer (0-65535)
+  * Default: `8082`
 * `index`
- * The URL for the Elasticsearch index to be queried.
- * Type: URL
- * Default: `http://localhost:9200/livecontent`
+  * The URL for the Elasticsearch index to be queried.
+  * Type: URL
+  * Default: `http://localhost:9200/livecontent`
 
 # Integration tests
 
