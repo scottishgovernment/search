@@ -23,8 +23,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Spliterators;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,6 +87,23 @@ public class SearchResourceTest {
         assertEquals(200, response.getStatus());
         verify(target).request();
     }
+
+    @Test
+    public void parametersToRequestObject() {
+         MultivaluedMap<String, String> params = new MultivaluedHashMap<>();
+         params.add("p", "a");
+         params.add("q", "1");
+         params.add("q", "2");
+
+         ObjectNode request = SearchResource.queryObject("template", params);
+
+         assertEquals("template", request.get("id").textValue());
+         ObjectNode paramsNode = (ObjectNode) request.get("params");
+         assertEquals("a", paramsNode.get("p").textValue());
+         assertEquals(2, paramsNode.get("q").size());
+         assertEquals("1", paramsNode.get("q").get(0).textValue());
+         assertEquals("2", paramsNode.get("q").get(1).textValue());
+     }
 
 }
 

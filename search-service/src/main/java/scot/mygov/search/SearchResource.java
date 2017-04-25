@@ -15,9 +15,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Path("/")
 public class SearchResource {
@@ -52,6 +59,46 @@ public class SearchResource {
         return proxy(target, request);
     }
 
+    @GET
+    @Path("{template}")
+    public Response searchGet(
+            @PathParam("template") String template,
+            @Context UriInfo uriInfo) {
+
+        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
+        ObjectNode request = queryObject(template, uriInfo.getQueryParameters());
+        WebTarget target = target("_search/template");
+        return proxy(target, request);
+    }
+
+    /**
+     * Converts parameters (from a query string) into an Elasticsearch template query object.
+     * If a parameter is specified once, it
+     */
+    static ObjectNode queryObject(
+            String template,
+            MultivaluedMap<String, String> params) {
+
+        ObjectNode paramsNode = JSON.objectNode();
+        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+            String param = entry.getKey();
+            List<String> values = entry.getValue();
+            if (values.size() == 1) {
+                paramsNode.put(param, values.get(0));
+            } else {
+                paramsNode.set(param, JSON.arrayNode()
+                        .addAll(values.stream()
+                                .map(JSON::textNode)
+                                .collect(toList())));
+            }
+
+        }
+        ObjectNode request = JSON.objectNode();
+        request.put(ID, template);
+        request.set(PARAMS, paramsNode);
+        return request;
+    }
+
     @POST
     @Path("{prefix : (template-search/)?}{template}")
     public Response searchAll(
@@ -68,7 +115,7 @@ public class SearchResource {
     }
 
     @POST
-    @Path("{prefix : (template-search/)?}{type}/{template}")
+    @Path("template-search/{type}/{template}")
     public Response searchByType(
             @PathParam("type") String type,
             @PathParam("template") String template,
