@@ -216,8 +216,8 @@ public class SearchIT {
     public void completion() throws IOException {
         postTemplate("completion", SearchIT.class.getResource("/completion.json"));
         Response response = client.target(application)
-                .path("ac")
-                .queryParam("q", "fo")
+                .path("completion")
+                .queryParam("term", "fo")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
         JsonNode tree = response.readEntity(JsonNode.class);
@@ -225,7 +225,7 @@ public class SearchIT {
 
         assertEquals(200, response.getStatus());
         assertEquals(0, tree.get("_shards").get("failed").asInt(-1));
-        JsonNode options = tree.path("autocomplete").path(0).path("options");
+        JsonNode options = tree.path("suggest").path("number").path(0).path("options");
         List<String> suggestions = new ArrayList<>();
         for (JsonNode node : options) {
             String text = node.path("text").asText();

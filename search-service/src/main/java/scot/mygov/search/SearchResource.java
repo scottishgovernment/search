@@ -132,19 +132,6 @@ public class SearchResource {
         return proxy(target, request);
     }
 
-    @GET
-    @Path("ac")
-    public Response autocomplete(@QueryParam("q") String query) {
-        ObjectNode request = (ObjectNode) JSON.objectNode()
-                .set("autocomplete", JSON.objectNode()
-                        .put("text", query.toLowerCase())
-                        .set("completion", JSON.objectNode()
-                                .put("field", "autocomplete")));
-
-        WebTarget target = target("_suggest");
-        return proxy(target, request);
-    }
-
     private WebTarget target(String path) {
         return targetProvider.get().path(path);
     }
