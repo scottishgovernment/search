@@ -195,7 +195,7 @@ public class SearchIT {
                 .set("tags", factory.arrayNode().add("fizz").add("buzz"));
 
         Response response = client.target(application)
-                .path("integers/fizzbuzz")
+                .path("fizzbuzz")
                 .request()
                 .post(Entity.json(params));
 
