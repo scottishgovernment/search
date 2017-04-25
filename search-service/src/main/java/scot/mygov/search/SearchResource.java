@@ -35,6 +35,8 @@ public class SearchResource {
 
     private static final String PARAMS = "params";
 
+    private static final String SEARCH_TEMPLATE = "_search/template";
+
     @Inject
     Provider<WebTarget> targetProvider;
 
@@ -55,7 +57,7 @@ public class SearchResource {
         request.set(ID, JSON.textNode("site-search"));
         request.set(PARAMS, params);
 
-        WebTarget target = target("_search/template");
+        WebTarget target = target(SEARCH_TEMPLATE);
         return proxy(target, request);
     }
 
@@ -66,7 +68,7 @@ public class SearchResource {
             @Context UriInfo uriInfo) {
 
         ObjectNode request = queryObject(template, uriInfo.getQueryParameters());
-        WebTarget target = target("_search/template");
+        WebTarget target = target(SEARCH_TEMPLATE);
         return proxy(target, request);
     }
 
@@ -109,7 +111,7 @@ public class SearchResource {
         request.set(ID, JSON.textNode(template));
         request.set(PARAMS, node);
 
-        WebTarget target = target("_search/template");
+        WebTarget target = target(SEARCH_TEMPLATE);
         return proxy(target, request);
     }
 
