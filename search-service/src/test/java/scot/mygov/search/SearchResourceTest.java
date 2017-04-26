@@ -49,8 +49,6 @@ public class SearchResourceTest {
 
     @Before
     public void setUp() {
-        WebTarget target = ClientBuilder.newClient()
-                .target("http://localhost:9200/index");
         this.target = mock(WebTarget.class);
 
         ObjectGraph graph = ObjectGraph.create(new SearchResourceTestModule());
