@@ -235,6 +235,28 @@ public class SearchIT {
         assertEquals(expected, new HashSet<>(suggestions));
     }
 
+    @Test
+    public void healthcheckReturns200() throws IOException {
+        Response r = client.target(application)
+                .path("health")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+        assertEquals(200, r.getStatus());
+        r.close();
+    }
+
+    @Test
+    public void healthcheckResponseContainsExpectedProperties() throws IOException {
+        ObjectNode response = client.target(application)
+                .path("health")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get(ObjectNode.class);
+        assertEquals(true, response.get("ok").asBoolean(false));
+        assertEquals(true, response.get("elasticsearch").asBoolean(false));
+        assertEquals(true, response.get("index").asBoolean(false));
+        assertEquals(20, response.get("documents").asInt());
+    }
+
     @AfterClass
     public static void tearDownClass() {
         logger.info("Stopping test server");

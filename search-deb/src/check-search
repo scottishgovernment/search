@@ -1,0 +1,86 @@
+#!/bin/sh
+set -eu
+progname=$(basename $0)
+host=localhost
+port=8082
+timeout=
+
+usage() {
+  cat <<EOF
+$progname
+
+Checks the health of the search service.
+
+Usage:  $progname [ -h <hostname> ] [ -p <port> ] [ -t <timeout> ]
+   or:  $progname --help
+
+This script is intended for use as a Nagios check, and follows usual
+conventions for exit code and output.
+EOF
+}
+
+parse_args() {
+  if [ $# -gt 0 ] && [ "$1" = "--help" ]; then
+    usage
+    exit 0
+  fi
+  while getopts h:p:t: arg; do
+    case $arg in
+      h)      host=$OPTARG;;
+      p)      port=$OPTARG;;
+      t)      timeout=$OPTARG;;
+    esac
+  done
+  shift `expr $OPTIND - 1`
+}
+
+get_health() {
+  url="$1"
+  curl_args=""
+  if [ -n "$timeout" ]; then
+    curl_args="${curl_args:+ }-m ${timeout}"
+  fi
+  curl -s ${curl_args} $url
+}
+
+format_status() {
+  local json="$1"
+  jq -r '. as $json |
+    def summary(json):
+      json |
+      if .ok then
+        "0 OK"
+      elif .index then
+        "1 WARNING"
+      else
+        "2 CRITICAL"
+      end +
+      " - " +
+      .message;
+    def performance_data(json):
+      json |
+      to_entries |
+      map(select(.key as $a | (["ok", "message"] | index($a) == null))) |
+      map(.key + ":" + (.value |tostring)) |
+      join(" ");
+    summary($json) + " | " + performance_data($json)' \
+    <<EOF
+$json
+EOF
+}
+
+parse_args "$@"
+
+url=http://$host:$port/health
+json="$(get_health "$url")" && ok= || ok=$?
+if [ -n "$ok" ]; then
+  printf "CRITICAL Could not fetch health from ${url}\n"
+  exit 3
+fi
+
+read status message <<EOF
+$(format_status "$json")
+EOF
+
+echo "$message"
+exit $status

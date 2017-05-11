@@ -15,11 +15,19 @@ public class SearchApplication extends Application {
     @Inject
     ErrorHandler errorHandler;
 
+    @Inject
+    Healthcheck healthcheck;
+
+    @Inject
+    RequestLogger logger;
+
     @Override
     public Set<Object> getSingletons() {
         return new HashSet<>(asList(
                 search,
-                errorHandler
+                errorHandler,
+                healthcheck,
+                logger
         ));
     }
 

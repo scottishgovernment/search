@@ -25,6 +25,41 @@ exposed directly to the internet. It limits the queries that are forwarded to El
   * Type: URL
   * Default: `http://localhost:9200/livecontent`
 
+# Monitoring
+
+The healthcheck endpoint is `GET /health`. The endpoint returns a JSON response
+with the properties listed below. The status code is `200` if the service is
+healthy, and `503` otherwise.
+
+* `ok`
+  * Indicates whether the search index is available and contains content.
+  * Type: boolean
+* `elasticsearch`
+  * Indicates whether Elasticsearch appears to be up. It is considered up if an
+    HTTP response is received, even if the status code indicates an error. This
+    is used to indicate connectivity to Elasticsearch only. See also: `index`.
+  * Type: boolean
+* `index`
+  * Indicates whether the index is available to the extent that a simple search query returns a 200 response code.
+  * Type: boolean
+* `shards`
+  * Indicates whether all the shards in the index are OK.  
+    This property is not present if `index` is false.
+  * Type: boolean
+* `documents`
+  * The number of documents in the index.  
+    This property is not present if `index` is false.
+  * Type: boolean
+* `message`
+  * The URL for the Elasticsearch index to be queried.
+  * Type: boolean
+
+The check-search script in this repository is a Nagios plugin that queries the
+healthcheck endpoint, returning the appropriate status code for Nagios. It also
+outputs a summary of the current status. The output information that shows up as
+performance data in Nagios, which includes the status of Elasticsearch; the
+availability of the index; document count and shard health.
+
 # Integration tests
 
 The tests in the `scot.mygov.search.it` package are integration tests that

@@ -83,6 +83,15 @@
               </mapper>
             </data>
             <data>
+              <src>${basedir}/src/check-search</src>
+              <type>file</type>
+              <mapper>
+                <type>perm</type>
+                <prefix>/opt/search</prefix>
+                <filemode>755</filemode>
+              </mapper>
+            </data>
+            <data>
               <type>template</type>
               <paths>
                 <path>/var/log/search</path>
