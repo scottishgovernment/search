@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
@@ -97,16 +98,14 @@ public class Healthcheck {
 
         @Override
         public void failed(Throwable throwable) {
-            Throwable t = throwable;
-            if (t.getCause() != null) {
-                t = t.getCause();
-            }
+            String message = formatMessage(throwable);
+            Throwable t = throwable.getCause() != null ? throwable.getCause() : throwable;
             LOGGER.error("{} {}", t.getClass().getName(), t.getMessage());
             boolean elasticsearch = t instanceof WebApplicationException;
             ObjectNode result = FACTORY.objectNode()
                     .put(ELASTICSEARCH, elasticsearch)
                     .put(INDEX, false)
-                    .put(MESSAGE, throwable.getLocalizedMessage());
+                    .put(MESSAGE, message);
             resume(Status.SERVICE_UNAVAILABLE, result);
         }
 
@@ -118,6 +117,24 @@ public class Healthcheck {
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(entity).build();
             asyncResponse.resume(response);
+        }
+
+        /**
+         * If the Elasticsearch healthcheck fails, the reason should returned in the response.
+         * This can be presented on a monitoring dashboard.
+         * However, if Elasticsearch returns a 40x error, then it should be obvious that it
+         * was in response to the Elasticsearch request, and not the response from this healthcheck.
+         * Therefore, if Elasticsearch returns a 40x error, augment the message to clarify that it
+         * is from Elasticsearch.
+         */
+        private String formatMessage(Throwable throwable) {
+            String message;
+            if (throwable instanceof ClientErrorException) {
+                message = "Elasticsearch returned: " + throwable.getMessage();
+            } else {
+                message = throwable.getMessage();
+            }
+            return message;
         }
 
     }

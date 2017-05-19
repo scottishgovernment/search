@@ -126,6 +126,7 @@ public class HealthcheckTest {
         assertEquals(false, health.get("ok").asBoolean(true));
         assertEquals(true, health.get("elasticsearch").asBoolean(false));
         assertEquals(false, health.get("index").asBoolean(true));
+        assertEquals("Elasticsearch returned: HTTP 404 Not Found", health.get("message").asText());
     }
 
     @Test
