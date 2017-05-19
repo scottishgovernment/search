@@ -133,7 +133,7 @@ public class HealthcheckTest {
     public void showsUnhealthyWhenElasticsearchIsNotAvailable() {
         when(asyncResponse.resume(response.capture())).thenReturn(true);
         HealthcheckCallback callback = new HealthcheckCallback(asyncResponse);
-        callback.failed(new ProcessingException(new IOException("Connection failed")));
+        callback.failed(new ProcessingException("Processing Exception", new IOException("Connection failed")));
         Response value = response.getValue();
         assertEquals(503, value.getStatus());
         ObjectNode health = (ObjectNode) value.getEntity();

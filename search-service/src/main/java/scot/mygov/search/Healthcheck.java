@@ -98,8 +98,8 @@ public class Healthcheck {
 
         @Override
         public void failed(Throwable throwable) {
-            String message = formatMessage(throwable);
             Throwable t = throwable.getCause() != null ? throwable.getCause() : throwable;
+            String message = formatMessage(t);
             LOGGER.error("{} {}", t.getClass().getName(), t.getMessage());
             boolean elasticsearch = t instanceof WebApplicationException;
             ObjectNode result = FACTORY.objectNode()
@@ -132,7 +132,9 @@ public class Healthcheck {
             if (throwable instanceof ClientErrorException) {
                 message = "Elasticsearch returned: " + throwable.getMessage();
             } else {
-                message = throwable.getMessage();
+                message = String.format("%s: %s",
+                        throwable.getClass().getName(),
+                        throwable.getMessage());
             }
             return message;
         }
