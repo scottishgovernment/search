@@ -5,7 +5,7 @@ import dagger.Provides;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scot.mygov.search.config.Configuration;
+import scot.mygov.config.Configuration;
 
 import javax.inject.Singleton;
 import javax.ws.rs.client.Client;

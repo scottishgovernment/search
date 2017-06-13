@@ -5,7 +5,7 @@ import dagger.Provides;
 import scot.mygov.search.SearchApplication;
 import scot.mygov.search.SearchConfiguration;
 import scot.mygov.search.SearchModule;
-import scot.mygov.search.config.Configuration;
+import scot.mygov.config.Configuration;
 
 import javax.inject.Singleton;
 import java.io.IOException;
