@@ -2,6 +2,6 @@
 set -e
 . /etc/profile
 exec /usr/bin/java \
-  -Dlogging.config=/opt/search/logback.xml \
+  -Dlogback.configurationFile=/opt/search/logback.xml \
   -jar /opt/search/search.jar \
   >> /var/log/search/search.log 2>&1
