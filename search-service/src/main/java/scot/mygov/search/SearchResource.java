@@ -1,6 +1,5 @@
 package scot.mygov.search;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,12 +12,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Map;
 
@@ -81,8 +76,7 @@ public class SearchResource {
     @Path("{template}")
     public Response searchAll(
             @PathParam("template") String template,
-            JsonNode node)
-            throws JsonProcessingException {
+            JsonNode node) {
 
         ObjectNode request = JSON.objectNode();
         request.set(ID, JSON.textNode(template));

@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
