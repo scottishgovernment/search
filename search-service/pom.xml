@@ -241,7 +241,7 @@
       <plugin>
         <groupId>com.github.alexcojocaru</groupId>
         <artifactId>elasticsearch-maven-plugin</artifactId>
-        <version>6.16</version>
+        <version>5.11</version>
         <configuration>
           <clusterName>test</clusterName>
           <version>${elasticsearch.version}</version>
