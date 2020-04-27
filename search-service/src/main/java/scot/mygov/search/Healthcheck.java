@@ -36,8 +36,7 @@ public class Healthcheck {
     @GET
     public void health(@Suspended final AsyncResponse response) {
         targetProvider.get()
-                .path("_search")
-                .queryParam("size", 0)
+                .path("_count")
                 .request()
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .buildGet()
@@ -75,7 +74,7 @@ public class Healthcheck {
 
         @Override
         public void completed(JsonNode search) {
-            int documents = search.path("hits").path("total").asInt(0);
+            int documents = search.path("count").asInt(0);
             JsonNode shards = search.path("_shards");
             int totalShards = shards.path("total").asInt(-1);
             int successful = shards.path("successful").asInt(-1);

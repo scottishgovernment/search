@@ -18,7 +18,7 @@
     <resteasy.version>3.9.1.Final</resteasy.version>
     <slf4j.version>1.7.25</slf4j.version>
     <logback.version>1.2.2</logback.version>
-    <elasticsearch.version>5.6.16</elasticsearch.version>
+    <elasticsearch.version>7.6.2</elasticsearch.version>
     <sonar.exclusions>target/**</sonar.exclusions>
   </properties>
 
@@ -241,7 +241,7 @@
       <plugin>
         <groupId>com.github.alexcojocaru</groupId>
         <artifactId>elasticsearch-maven-plugin</artifactId>
-        <version>5.11</version>
+        <version>6.16</version>
         <configuration>
           <clusterName>test</clusterName>
           <version>${elasticsearch.version}</version>

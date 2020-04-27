@@ -57,8 +57,7 @@ public class HealthcheckTest {
         when(asyncResponse.resume(response.capture())).thenReturn(true);
         HealthcheckCallback callback = new HealthcheckCallback(asyncResponse);
         ObjectNode node = factory.objectNode();
-        node.set("hits", factory.objectNode()
-                .put("total", 10));
+        node.put("count", 10);
         node.set("_shards", factory.objectNode()
                 .put("total", 5)
                 .put("failed", 0)
@@ -78,8 +77,7 @@ public class HealthcheckTest {
         when(asyncResponse.resume(response.capture())).thenReturn(true);
         HealthcheckCallback callback = new HealthcheckCallback(asyncResponse);
         ObjectNode node = factory.objectNode();
-        node.set("hits", factory.objectNode()
-                .put("total", 0));
+        node.put("count", 0);
         node.set("_shards", factory.objectNode()
                 .put("total", 5)
                 .put("failed", 0)
@@ -99,8 +97,7 @@ public class HealthcheckTest {
         when(asyncResponse.resume(response.capture())).thenReturn(true);
         HealthcheckCallback callback = new HealthcheckCallback(asyncResponse);
         ObjectNode node = factory.objectNode();
-        node.set("hits", factory.objectNode()
-                .put("total", 10));
+        node.put("count", 10);
         node.set("_shards", factory.objectNode()
                 .put("total", 5)
                 .put("failed", 1)

@@ -5,7 +5,7 @@
         {{#tags}}
         {"term": { "tags": "{{.}}" } },
         {{/tags}}
-        {"type": {"value": "integers"}}
+        {"match_all": {}}
       ]
     }
   },

@@ -140,7 +140,6 @@ public class SearchIT {
             ObjectNode index = node.putObject("index");
             index.put("_id", String.valueOf(i));
             index.put("_index", NUMBERS);
-            index.put("_type", "integers");
             mapper.writeValue(writer, node);
             writer.append('\n');
 
@@ -179,13 +178,16 @@ public class SearchIT {
     private static void postTemplate(String name, URL templateUrl) throws IOException {
         logger.info("Posting search template {}", name);
         String templateString = IOUtils.toString(templateUrl, "UTF-8");
-        ObjectNode template = factory.objectNode();
-        template.put("template", templateString);
+        ObjectNode body = factory.objectNode();
+        ObjectNode script = factory.objectNode();
+        script.put("lang", "mustache");
+        script.put("source", templateString);
+        body.set("script", script);
         client.target(elasticsearch)
-                .path("_search/template/{name}")
+                .path("_scripts/{name}")
                 .resolveTemplate("name", name)
                 .request()
-                .post(Entity.json(template), Object.class);
+                .post(Entity.json(body), Object.class);
     }
 
     @Test

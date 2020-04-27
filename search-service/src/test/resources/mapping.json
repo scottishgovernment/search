@@ -1,14 +1,12 @@
 {
   "mappings": {
-    "integers" : {
-      "properties" : {
-        "words" : {
-          "type" : "text",
-          "copy_to": "autocomplete"
-        },
-        "autocomplete" : {
-          "type" : "completion"
-        }
+    "properties" : {
+      "words" : {
+        "type" : "text",
+        "copy_to": "autocomplete"
+      },
+      "autocomplete" : {
+        "type" : "completion"
       }
     }
   }
