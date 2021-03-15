@@ -5,7 +5,9 @@ After=network.target
 [Service]
 User=search
 WorkingDirectory=/opt/search
+EnvironmentFile=-/etc/default/search
 ExecStart=/opt/search/run
+SyslogIdentifier=search
 Restart=on-failure
 
 [Install]

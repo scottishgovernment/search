@@ -1,7 +1,9 @@
 #!/bin/sh
-set -e
 . /etc/profile
-exec /usr/bin/java \
+set -eu
+JAVA=${JAVA_HOME:-/usr}/bin/java
+
+exec "$JAVA" \
   -Dlogback.configurationFile=/opt/search/logback.xml \
   -jar /opt/search/search.jar \
   >> /var/log/search/search.log 2>&1
