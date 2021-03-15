@@ -147,12 +147,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.8.1</version>
       </plugin>
 
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.6</version>
         <executions>
           <execution>
             <goals>
@@ -176,7 +177,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.20</version>
+        <version>3.0.0-M5</version>
         <executions>
           <execution>
             <goals>
@@ -200,7 +201,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.2.0</version>
         <configuration>
           <minPortNumber>9200</minPortNumber>
           <maxPortNumber>9300</maxPortNumber>
@@ -241,7 +242,7 @@
       <plugin>
         <groupId>com.github.alexcojocaru</groupId>
         <artifactId>elasticsearch-maven-plugin</artifactId>
-        <version>6.16</version>
+        <version>6.19</version>
         <configuration>
           <clusterName>test</clusterName>
           <version>${elasticsearch.version}</version>
