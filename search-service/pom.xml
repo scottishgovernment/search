@@ -14,7 +14,7 @@
   <name>Search Service</name>
 
   <properties>
-    <undertow.version>2.0.29.Final</undertow.version>
+    <undertow.version>2.2.15.Final</undertow.version>
     <resteasy.version>3.9.1.Final</resteasy.version>
     <slf4j.version>1.7.25</slf4j.version>
     <logback.version>1.2.2</logback.version>
